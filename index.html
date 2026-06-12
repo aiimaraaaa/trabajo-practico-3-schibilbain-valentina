@@ -29,8 +29,50 @@
           type="text"
           id="inputBusqueda"
           class="form-control form-control-lg"
-          placeholder="🔍 Buscá un personaje por nombre..."
+          placeholder=" Buscá un personaje por nombre..."
         />
       </div>
     </div>
+    <div id="mensajeSinResultados" class="text-center py-4" style="display:none;">
+      <p class="text-muted fs-5"> No se encontraron personajes con ese nombre.</p>
+    </div>
+    <div id="contenedorPersonajes" class="row"></div>
+  </div>
+
+  <div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-warning">
+          <h5 class="modal-title fw-bold" id="modalNombre"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img id="modalImagen" src="" alt="Personaje" class="img-fluid rounded mb-3" style="max-height:220px;" />
+          <table class="table table-sm text-start">
+            <tbody>
+              <tr><th>Ocupación</th><td id="modalOcupacion"></td></tr>
+              <tr><th>Estado</th><td id="modalEstado"></td></tr>
+              <tr><th>Edad</th><td id="modalEdad"></td></tr>
+              <tr><th>Nacimiento</th><td id="modalNacimiento"></td></tr>
+              <tr><th>Género</th><td id="modalGenero"></td></tr>
+            </tbody>
+          </table>
+          <blockquote class="blockquote">
+            <p class="fst-italic text-muted small" id="modalFrase"></p>
+          </blockquote>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmGA6Y4a6c9Zp/g5U3IlEkxHCPp"
+    crossorigin="anonymous"
+  ></script>
+  <script src="assets/js/app.js"></script>
 </body>
+</html>
