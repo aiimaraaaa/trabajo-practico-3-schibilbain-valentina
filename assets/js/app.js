@@ -78,3 +78,17 @@ const inputBusqueda = document.querySelector("#inputBusqueda");
 inputBusqueda.addEventListener("input", (evento) => {
   filtrarPersonajes(evento.target.value);
 });
+
+
+
+const obtenerDetalle = async (id) => {
+  try {
+    const respuesta = await fetch(`${urlPersonajes}/${id}`);
+    if (!respuesta.ok) throw new Error("Error al obtener el detalle");
+    const datos = await respuesta.json();
+    return datos;
+  } catch (error) {
+    console.log("Error en detalle:", error);
+    return null;
+  }
+};
