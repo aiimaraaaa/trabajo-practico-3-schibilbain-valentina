@@ -97,12 +97,12 @@ const obtenerDetalle = async (id) => {
 
 
 const mostrarModal = (personaje) => {
-  document.querySelector("#modalNombre").textContent     = personaje.name;
+  document.querySelector("#modalNombre").textContent = personaje.name;
   document.querySelector("#modalOcupacion").textContent  = personaje.occupation || "Sin ocupación";
-  document.querySelector("#modalEstado").textContent     = personaje.status || "Desconocido";
-  document.querySelector("#modalEdad").textContent       = personaje.age || "Desconocida";
+  document.querySelector("#modalEstado").textContent = personaje.status || "Desconocido";
+  document.querySelector("#modalEdad").textContent = personaje.age || "Desconocida";
   document.querySelector("#modalNacimiento").textContent = personaje.birth_date || "Desconocida";
-  document.querySelector("#modalGenero").textContent     = personaje.gender || "No especificado";
+  document.querySelector("#modalGenero").textContent = personaje.gender || "No especificado";
   const urlImagen = personaje.image
     ? `${urlCDN}${personaje.image}`
     : "https://via.placeholder.com/200x200?text=Sin+imagen";
@@ -113,3 +113,20 @@ const mostrarModal = (personaje) => {
   const modal = new bootstrap.Modal(document.querySelector("#modalDetalle"));
   modal.show();
 };
+
+
+const contenedor = document.querySelector("#contenedorPersonajes");
+contenedor.addEventListener("click", async (evento) => {
+  if (evento.target.classList.contains("btn-ver-detalle")) {
+    const id = evento.target.dataset.id;
+    evento.target.textContent = "Cargando...";
+    evento.target.disabled    = true;
+    const personaje = await obtenerDetalle(id);
+    evento.target.textContent = "Ver detalle";
+    evento.target.disabled    = false;
+    if (!personaje) return;
+    mostrarModal(personaje);
+  }
+});
+
+obtenerPersonajes();
