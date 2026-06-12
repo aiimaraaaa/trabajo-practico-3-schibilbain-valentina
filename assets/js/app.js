@@ -92,3 +92,24 @@ const obtenerDetalle = async (id) => {
     return null;
   }
 };
+
+
+
+
+const mostrarModal = (personaje) => {
+  document.querySelector("#modalNombre").textContent     = personaje.name;
+  document.querySelector("#modalOcupacion").textContent  = personaje.occupation || "Sin ocupación";
+  document.querySelector("#modalEstado").textContent     = personaje.status || "Desconocido";
+  document.querySelector("#modalEdad").textContent       = personaje.age || "Desconocida";
+  document.querySelector("#modalNacimiento").textContent = personaje.birth_date || "Desconocida";
+  document.querySelector("#modalGenero").textContent     = personaje.gender || "No especificado";
+  const urlImagen = personaje.image
+    ? `${urlCDN}${personaje.image}`
+    : "https://via.placeholder.com/200x200?text=Sin+imagen";
+  document.querySelector("#modalImagen").src = urlImagen;
+  const frases = personaje.phrases;
+  document.querySelector("#modalFrase").textContent =
+    frases && frases.length > 0 ? frases[0] : "Sin frase";
+  const modal = new bootstrap.Modal(document.querySelector("#modalDetalle"));
+  modal.show();
+};
