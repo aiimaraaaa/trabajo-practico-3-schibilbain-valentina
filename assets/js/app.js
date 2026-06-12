@@ -58,3 +58,23 @@ const renderizarCards = (listaDePersonajes) => {
   }).join("");
   contenedor.innerHTML = tarjetasHtml;
 };
+
+const limpiarResultados = () => {
+  document.querySelector("#contenedorPersonajes").innerHTML = "";
+};
+
+const filtrarPersonajes = (textoBuscado) => {
+  if (!textoBuscado || textoBuscado.trim() === "") {
+    renderizarCards(todosLosPersonajes);
+    return;
+  }
+  const filtrados = todosLosPersonajes.filter((personaje) =>
+    personaje.name.toLowerCase().includes(textoBuscado.toLowerCase().trim())
+  );
+  renderizarCards(filtrados);
+};
+
+const inputBusqueda = document.querySelector("#inputBusqueda");
+inputBusqueda.addEventListener("input", (evento) => {
+  filtrarPersonajes(evento.target.value);
+});
