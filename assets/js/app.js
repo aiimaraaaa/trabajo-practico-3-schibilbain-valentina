@@ -117,6 +117,7 @@ const mostrarModal = (personaje) => {
 
 
 
+
 const contenedor = document.querySelector("#contenedorPersonajes");
 contenedor.addEventListener("click", async (evento) => {
   if (evento.target.classList.contains("btn-ver-detalle")) {
