@@ -1,32 +1,38 @@
 const urlPersonajes = "https://thesimpsonsapi.com/api/characters";
 const urlCDN = "https://cdn.thesimpsonsapi.com/500";
 
-
 let todosLosPersonajes = [];
 
-// obtener el listado general
 const obtenerPersonajes = async () => {
   try {
     const respuesta = await fetch(urlPersonajes);
-
-    if (!respuesta.ok) {
-      throw new Error("Error al conectar con la API");
-    }
-
+    if (!respuesta.ok) throw new Error("Error al conectar con la API");
     const datos = await respuesta.json();
-    todosLosPersonajes = datos.data || datos;
+    todosLosPersonajes = datos.results;
     renderizarCards(todosLosPersonajes);
-
   } catch (error) {
     console.log("Error:", error);
     document.querySelector("#contenedorPersonajes").innerHTML =
       `<div class="col-12 text-center text-danger py-4">
-        <p>No se pudo cargar los personajes. Revisá tu conexión.</p>
+        <p>No se pudo cargar los personajes.</p>
       </div>`;
   }
 };
+
+const obtenerDetalle = async (id) => {
+  try {
+    const respuesta = await fetch(`${urlPersonajes}/${id}`);
+    if (!respuesta.ok) throw new Error("Error al obtener el detalle");
+    const datos = await respuesta.json();
+    return datos;
+  } catch (error) {
+    console.log("Error en detalle:", error);
+    return null;
+  }
+};
+
 const renderizarCards = (listaDePersonajes) => {
-  const contenedor    = document.querySelector("#contenedorPersonajes");
+  const contenedor = document.querySelector("#contenedorPersonajes");
   const sinResultados = document.querySelector("#mensajeSinResultados");
   limpiarResultados();
   if (listaDePersonajes.length === 0) {
@@ -35,8 +41,8 @@ const renderizarCards = (listaDePersonajes) => {
   }
   sinResultados.style.display = "none";
   const tarjetasHtml = listaDePersonajes.map((personaje) => {
-    const urlImagen = personaje.image
-      ? `${urlCDN}${personaje.image}`
+    const urlImagen = personaje.portrait_path
+      ? `${urlCDN}${personaje.portrait_path}`
       : "https://via.placeholder.com/200x200?text=Sin+imagen";
     const badgeEstado = personaje.status === "Alive"
       ? `<span class="badge bg-success">Vivo</span>`
@@ -59,6 +65,24 @@ const renderizarCards = (listaDePersonajes) => {
   contenedor.innerHTML = tarjetasHtml;
 };
 
+const mostrarModal = (personaje) => {
+  document.querySelector("#modalNombre").textContent = personaje.name;
+  document.querySelector("#modalOcupacion").textContent = personaje.occupation || "Sin ocupación";
+  document.querySelector("#modalEstado").textContent = personaje.status || "Desconocido";
+  document.querySelector("#modalEdad").textContent = personaje.age || "Desconocida";
+  document.querySelector("#modalNacimiento").textContent = personaje.birthdate || "Desconocida";
+  document.querySelector("#modalGenero").textContent = personaje.gender || "No especificado";
+  const urlImagen = personaje.portrait_path
+    ? `${urlCDN}${personaje.portrait_path}`
+    : "https://via.placeholder.com/200x200?text=Sin+imagen";
+  document.querySelector("#modalImagen").src = urlImagen;
+  const frases = personaje.phrases;
+  document.querySelector("#modalFrase").textContent =
+    frases && frases.length > 0 ? frases[0] : "Sin frase";
+  const modal = new bootstrap.Modal(document.querySelector("#modalDetalle"));
+  modal.show();
+};
+
 const limpiarResultados = () => {
   document.querySelector("#contenedorPersonajes").innerHTML = "";
 };
@@ -79,54 +103,15 @@ inputBusqueda.addEventListener("input", (evento) => {
   filtrarPersonajes(evento.target.value);
 });
 
-
-
-const obtenerDetalle = async (id) => {
-  try {
-    const respuesta = await fetch(`${urlPersonajes}/${id}`);
-    if (!respuesta.ok) throw new Error("Error al obtener el detalle");
-    const datos = await respuesta.json();
-    return datos;
-  } catch (error) {
-    console.log("Error en detalle:", error);
-    return null;
-  }
-};
-
-
-
-
-const mostrarModal = (personaje) => {
-  document.querySelector("#modalNombre").textContent = personaje.name;
-  document.querySelector("#modalOcupacion").textContent  = personaje.occupation || "Sin ocupación";
-  document.querySelector("#modalEstado").textContent = personaje.status || "Desconocido";
-  document.querySelector("#modalEdad").textContent = personaje.age || "Desconocida";
-  document.querySelector("#modalNacimiento").textContent = personaje.birth_date || "Desconocida";
-  document.querySelector("#modalGenero").textContent = personaje.gender || "No especificado";
-  const urlImagen = personaje.image
-    ? `${urlCDN}${personaje.image}`
-    : "https://via.placeholder.com/200x200?text=Sin+imagen";
-  document.querySelector("#modalImagen").src = urlImagen;
-  const frases = personaje.phrases;
-  document.querySelector("#modalFrase").textContent =
-    frases && frases.length > 0 ? frases[0] : "Sin frase";
-  const modal = new bootstrap.Modal(document.querySelector("#modalDetalle"));
-  modal.show();
-};
-
-
-
-
-
 const contenedor = document.querySelector("#contenedorPersonajes");
 contenedor.addEventListener("click", async (evento) => {
   if (evento.target.classList.contains("btn-ver-detalle")) {
     const id = evento.target.dataset.id;
     evento.target.textContent = "Cargando...";
-    evento.target.disabled    = true;
+    evento.target.disabled = true;
     const personaje = await obtenerDetalle(id);
     evento.target.textContent = "Ver detalle";
-    evento.target.disabled    = false;
+    evento.target.disabled = false;
     if (!personaje) return;
     mostrarModal(personaje);
   }
