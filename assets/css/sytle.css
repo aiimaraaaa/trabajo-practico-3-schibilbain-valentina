@@ -1,11 +1,22 @@
 body {
-  background-color: #f8f9fa;
+  background-color: #f0f4ff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar {
+  background-color: #1a3a6b !important;
+  border-bottom: 4px solid #f0c040;
+}
+
+.navbar-brand {
+  color: #f0c040 !important;
+  font-size: 1.5rem;
 }
 
 .card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   border: none;
+  border-radius: 12px;
 }
 
 .card:hover {
@@ -16,8 +27,37 @@ body {
 .card-img-top {
   height: 200px;
   object-fit: cover;
+  border-radius: 12px 12px 0 0;
 }
 
-.navbar {
-  border-bottom: 3px solid #333;
+.btn-ver-detalle {
+  background-color: #f0c040;
+  border: none;
+  color: #1a3a6b;
+  font-weight: bold;
+}
+
+.btn-ver-detalle:hover {
+  background-color: #d4a800;
+  color: #1a3a6b;
+}
+
+#inputBusqueda {
+  border: 2px solid #1a3a6b;
+  border-radius: 25px;
+  padding-left: 20px;
+}
+
+#inputBusqueda:focus {
+  border-color: #f0c040;
+  box-shadow: 0 0 0 3px rgba(240, 192, 64, 0.3);
+  outline: none;
+}
+
+.modal-header {
+  background-color: #1a3a6b !important;
+}
+
+.modal-title {
+  color: #f0c040 !important;
 }
